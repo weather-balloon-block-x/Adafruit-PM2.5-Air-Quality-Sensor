@@ -2,9 +2,6 @@
 // uncomment this line:
 // #define pmsSerial Serial1
 
-// For UNO and others without hardware serial, we must use software serial...
-// pin #2 is IN from sensor (TX pin on sensor), leave pin #3 disconnected
-// comment these two lines if using hardware serial
 #include <SoftwareSerial.h>
 SoftwareSerial pmsSerial(2, 3);
 
@@ -30,6 +27,7 @@ struct pms5003data data;
 void loop() {
   if (readPMSdata(&pmsSerial)) {
     // reading data was successful!
+    // print data
     Serial.println();
     Serial.println("---------------------------------------");
     Serial.println("Concentration Units (standard)");
@@ -76,13 +74,6 @@ boolean readPMSdata(Stream *s) {
   for (uint8_t i=0; i<30; i++) {
     sum += buffer[i];
   }
-
-  /* debugging
-  for (uint8_t i=2; i<32; i++) {
-    Serial.print("0x"); Serial.print(buffer[i], HEX); Serial.print(", ");
-  }
-  Serial.println();
-  */
   
   // The data comes in endian'd, this solves it so it works on all platforms
   uint16_t buffer_u16[15];
