@@ -13,6 +13,7 @@ void setup() {
   pmsSerial.begin(9600);
 }
 
+// create a struct to store crucial data
 struct pms5003data {
   uint16_t framelen;
   uint16_t pm10_standard, pm25_standard, pm100_standard;
@@ -86,6 +87,7 @@ boolean readPMSdata(Stream *s) {
   memcpy((void *)&data, (void *)buffer_u16, 30);
 
   if (sum != data.checksum) {
+    // serial print failed checksum
     Serial.println("Checksum failure");
     return false;
   }
